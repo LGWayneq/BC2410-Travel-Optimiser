@@ -13,12 +13,8 @@ DESTINATION_CITIES = [
     "NRT", # Tokyo
     "ICN", # Seoul
     "PEK", # Beijing
-    "HKG", # Hong Kong
     "TPE", # Taipei
-    "BKK", # Bangkok
-    "KUL", # Kuala Lumpur
-    "CGK", # Jakarta
-    "MNL", # Manila
+    "SGN", # Ho Chi Minh
 ]
 
 def format_url(departure_city, destination_city, departure_date):

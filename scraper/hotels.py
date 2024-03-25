@@ -13,12 +13,8 @@ CITIES = [
     "Tokyo",
     "Seoul",
     "Beijing",
-    "Hong Kong",
     "Taipei",
-    "Bangkok",
-    "Kuala Lumpur",
-    "Jakarta",
-    "Manila",
+    "Ho Chi Minh",
 ]
 
 def format_url(city, check_in_date, check_out_date, adults, children):
