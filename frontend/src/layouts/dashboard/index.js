@@ -64,7 +64,7 @@ function Dashboard() {
   return (
     <>
       {loading && <Loading />}
-      <div style={{ display: "flex", margin: -8 }}>
+      <div style={{ display: "flex", margin: -8, height: '100vh' }}>
         <div style={{ flex: 1, padding: 20 }}>
           <DropdownSelect
             label="Destination"
@@ -103,14 +103,33 @@ function Dashboard() {
           </Button>
         </div>
 
-        <div style={{ flex: 2 }}>
+        <div style={{ flex: 2, height: "100%" }}>
           <ModelNavbar
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab} />
-          {selectedTab === 0 && <FlightComponent />}
-          {selectedTab === 1 && <AttractionComponent />}
-          {selectedTab === 2 && <HotelComponent />}
-          {selectedTab === 3 && <RouteComponent />}
+          <div style={{ height: "calc(100% - 60px)" }}>
+            {selectedTab === 0 &&
+              <FlightComponent />
+            }
+            {selectedTab === 1 &&
+              <AttractionComponent />
+            }
+            {selectedTab === 2 &&
+              <HotelComponent />
+            }
+            {selectedTab === 3 &&
+              <RouteComponent
+                markers={[{
+                  lat: 1.3521,
+                  lng: 103.8198
+                }]}
+                paths={[[
+                  {lat: 1.3521, lng: 103.8198},
+                  {lat: 1.3522, lng: 103.8198},
+                  {lat: 1.3523, lng: 103.8198},
+                ]]} />
+            }
+          </div>
         </div>
       </div>
     </>
