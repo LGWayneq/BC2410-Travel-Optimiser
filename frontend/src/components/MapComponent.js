@@ -38,12 +38,12 @@ export default function MapComponent(props) {
             onLoad={onLoad}
             onUnmount={onUnmount}
         >
-            {props.markers.map((marker, index) => (
+            {props.markers && props.markers.map((marker, index) => (
                 <Marker
                     key={index}
                     position={marker} />
             ))}
-            {props.paths.map((path, index) => (
+            {props.markers && props.paths.map((path, index) => (
                 <Polyline
                     key={index}
                     path={path} />

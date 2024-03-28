@@ -13,11 +13,22 @@ import AttractionComponent from "./components/AttractionComponent";
 import HotelComponent from "./components/HotelComponent";
 import RouteComponent from "./components/RouteComponent";
 import SliderInput from "components/SliderInput";
+import RequestInputComponent from "./components/RequestInputComponent";
+import SectionHeading from "components/SectionHeading";
+import CheckboxInput from "components/CheckboxInput";
 
 const destinations = [
   "Tokyo",
-  "New York",
-  "Seoul"
+  "Seoul",
+  "Beijing",
+  "Taipei",
+  "Ho Chi Minh",
+]
+
+const cabinClasses = [
+  "Economy",
+  "Business",
+  "First Class",
 ]
 
 function Dashboard() {
@@ -27,6 +38,11 @@ function Dashboard() {
   const [startDate, setStartDate] = useState(dayjs());
   const [endDate, setEndDate] = useState(dayjs());
   const [crowdPreference, setCrowdPreference] = useState(5);
+  const [cabinClass, setCabinClass] = useState();
+  const [minLegroom, setMinLegroom] = useState();
+  const [noOvernight, setNoOvernight] = useState(false);
+  const [noLayovers, setNoLayovers] = useState(false);
+  const [modelReady, setModelReady] = useState(false);
   const [selectedTab, setSelectedTab] = useState();
 
   function handleDestinationChange(event) {
@@ -45,6 +61,22 @@ function Dashboard() {
     setEndDate(date);
   }
 
+  function handleCabinClassChange(event) {
+    setCabinClass(event.target.value);
+  }
+
+  function handleMinLegroomChange(event) {
+    setMinLegroom(event.target.value);
+  }
+
+  function handleNoOvernightChange(event) {
+    setNoOvernight(event.target.checked);
+  }
+
+  function handleNoLayoversChange(event) {
+    setNoLayovers(event.target.checked);
+  }
+
   function handleCrowdPreferenceChange(event, value) {
     setCrowdPreference(value);
   }
@@ -56,7 +88,8 @@ function Dashboard() {
       budget,
       startDate: startDate.format("YYYY-MM-DD"),
       endDate: endDate.format("YYYY-MM-DD")
-    }).then(() => {
+    }).then((res, status) => {
+      setModelReady(true);
       setLoading(false);
     });
   }
@@ -95,6 +128,37 @@ function Dashboard() {
             value={crowdPreference}
             onChange={handleCrowdPreferenceChange}
           />
+
+          <SectionHeading>Flight Preferences</SectionHeading>
+          <DropdownSelect
+            label="Cabin Class"
+            value={cabinClass}
+            onChange={handleCabinClassChange}
+            options={cabinClasses}
+          />
+          <TextInput
+            label="Min. Legroom (inches)"
+            value={minLegroom}
+            onChange={handleMinLegroomChange}
+            type="number"
+          />
+          <CheckboxInput
+            label="No overnight flights"
+            value={noOvernight}
+            onChange={handleNoOvernightChange}
+          />
+          <CheckboxInput
+            label="No layovers"
+            value={noLayovers}
+            onChange={handleNoLayoversChange}
+          />
+
+          <SectionHeading>Attraction Preferences</SectionHeading>
+
+          <SectionHeading>Hotel Preferences</SectionHeading>
+
+          <SectionHeading>Route Preferences</SectionHeading>
+
           <Button
             variant="contained"
             color="primary"
@@ -108,26 +172,31 @@ function Dashboard() {
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab} />
           <div style={{ height: "calc(100% - 60px)" }}>
-            {selectedTab === 0 &&
-              <FlightComponent />
-            }
-            {selectedTab === 1 &&
-              <AttractionComponent />
-            }
-            {selectedTab === 2 &&
-              <HotelComponent />
-            }
-            {selectedTab === 3 &&
-              <RouteComponent
-                markers={[{
-                  lat: 1.3521,
-                  lng: 103.8198
-                }]}
-                paths={[[
-                  {lat: 1.3521, lng: 103.8198},
-                  {lat: 1.3522, lng: 103.8198},
-                  {lat: 1.3523, lng: 103.8198},
-                ]]} />
+            {modelReady
+              ? <>
+                {selectedTab === 0 &&
+                  <FlightComponent />
+                }
+                {selectedTab === 1 &&
+                  <AttractionComponent />
+                }
+                {selectedTab === 2 &&
+                  <HotelComponent />
+                }
+                {selectedTab === 3 &&
+                  <RouteComponent
+                    markers={[{
+                      lat: 1.3521,
+                      lng: 103.8198
+                    }]}
+                    paths={[[
+                      { lat: 1.3521, lng: 103.8198 },
+                      { lat: 1.3522, lng: 103.8198 },
+                      { lat: 1.3523, lng: 103.8198 },
+                    ]]} />
+                }
+              </>
+              : <RequestInputComponent />
             }
           </div>
         </div>
