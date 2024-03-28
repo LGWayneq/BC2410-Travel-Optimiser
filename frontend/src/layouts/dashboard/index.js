@@ -31,6 +31,18 @@ const cabinClasses = [
   "First Class",
 ]
 
+const dummyFlight = { 
+  departingAirport: "Changi Airport",
+  arrivingAirport: "Narita Airport",
+  airline: "Singapore Airlines", 
+  price: 1000, 
+  duration: 10, 
+  legroom: 30, 
+  layovers: 0, 
+  departureDate: dayjs(), 
+  arrivalDate: dayjs()
+}
+
 function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [destination, setDestination] = useState();
@@ -43,6 +55,8 @@ function Dashboard() {
   const [noOvernight, setNoOvernight] = useState(false);
   const [noLayovers, setNoLayovers] = useState(false);
   const [modelReady, setModelReady] = useState(false);
+  const [optimalFlight, setOptimalFlight] = useState(dummyFlight);
+  const [flights, setFlights] = useState([]);
   const [selectedTab, setSelectedTab] = useState();
 
   function handleDestinationChange(event) {
@@ -98,7 +112,7 @@ function Dashboard() {
     <>
       {loading && <Loading />}
       <div style={{ display: "flex", margin: -8, height: '100vh' }}>
-        <div style={{ flex: 1, padding: 20 }}>
+        <div style={{ flex: 1, padding: 20, overflowY: 'scroll' }}>
           <DropdownSelect
             label="Destination"
             value={destination}
@@ -172,10 +186,12 @@ function Dashboard() {
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab} />
           <div style={{ height: "calc(100% - 60px)" }}>
-            {modelReady
+            {!modelReady
               ? <>
                 {selectedTab === 0 &&
-                  <FlightComponent />
+                  <FlightComponent 
+                    optimalFlight={optimalFlight}
+                    flights={flights}/>
                 }
                 {selectedTab === 1 &&
                   <AttractionComponent />
